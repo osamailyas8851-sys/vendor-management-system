@@ -25,6 +25,7 @@ import type {
 import type {
   CreateVendorInput,
   Vendor,
+  VendorComparisonResponse,
   VendorDetailsResponse,
   VendorListResponse,
   VendorProfile,
@@ -447,6 +448,48 @@ export function getVendorsFromDatabase(): VendorListResponse {
     items: vendors,
     total: vendors.length,
   }
+}
+
+export function getVendorComparisonFromDatabase(
+  vendorIds: string[]
+): VendorComparisonResponse {
+  const database = readDatabase()
+  const uniqueIds = [...new Set(vendorIds)].slice(0, 4)
+  const items = uniqueIds.flatMap((vendorId) => {
+    const vendor = database.vendors.find((item) => item.id === vendorId)
+    const profile = database.vendorProfiles[vendorId]
+
+    if (!vendor || !profile) return []
+
+    const orders = database.purchaseOrders.filter(
+      (order) => order.vendorId === vendorId
+    )
+    const orderValue = orders.reduce((total, order) => total + order.value, 0)
+    const risk = getVendorRisk(vendor, profile)
+
+    return [
+      {
+        averageOrderValue: orders.length
+          ? Math.round(orderValue / orders.length)
+          : 0,
+        category: vendor.category,
+        certifications: vendor.certifications,
+        city: vendor.city,
+        code: vendor.code,
+        deliveryScore: profile.performance.deliveryScore,
+        id: vendor.id,
+        name: vendor.name,
+        orderCount: orders.length,
+        paymentTerms: vendor.paymentTerms,
+        rating: vendor.rating,
+        ...risk,
+        status: vendor.status,
+        totalPurchaseValue: vendor.totalPurchase,
+      },
+    ]
+  })
+
+  return clone({ items, updatedAt: database.updatedAt })
 }
 
 function createNotificationListResponse(

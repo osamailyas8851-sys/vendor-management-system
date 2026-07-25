@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
 import {
   CircleAlertIcon,
+  ScaleIcon,
   PlusIcon,
   RefreshCwIcon,
   UsersRoundIcon,
@@ -44,6 +45,10 @@ function VendorDirectoryRoute() {
               {vendorsQuery.data.total.toLocaleString("en-IN")} vendors
             </Badge>
           ) : null}
+          <Button render={<Link to="/vendors/compare" />} variant="outline">
+            <ScaleIcon />
+            Compare Vendors
+          </Button>
           <Button render={<Link to="/vendors/new" />}>
             <PlusIcon />
             Add Vendor

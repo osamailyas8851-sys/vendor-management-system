@@ -164,3 +164,26 @@ export type VendorDetailsResponse = VendorProfile & {
   purchaseHistory: VendorPurchaseOrder[]
   vendor: Vendor
 }
+
+export type VendorComparisonItem = {
+  averageOrderValue: number
+  category: string
+  certifications: string[]
+  city: string
+  code: string
+  deliveryScore: number
+  id: string
+  name: string
+  orderCount: number
+  paymentTerms: VendorPaymentTerms
+  rating: number
+  riskLevel: "Low" | "Medium" | "High" | "Critical"
+  riskScore: number
+  status: VendorStatus
+  totalPurchaseValue: number
+}
+
+export type VendorComparisonResponse = {
+  items: VendorComparisonItem[]
+  updatedAt: string
+}

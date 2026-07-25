@@ -16,6 +16,7 @@ import { Route as PerformanceRouteImport } from './routes/performance'
 import { Route as VendorsRouteImport } from './routes/vendors'
 import { Route as ApprovalsVendorIdRouteImport } from './routes/approvals_.$vendorId'
 import { Route as VendorsVendorIdRouteImport } from './routes/vendors_.$vendorId'
+import { Route as VendorsCompareRouteImport } from './routes/vendors_.compare'
 import { Route as VendorsNewRouteImport } from './routes/vendors_.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +54,11 @@ const VendorsVendorIdRoute = VendorsVendorIdRouteImport.update({
   path: '/vendors/$vendorId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VendorsCompareRoute = VendorsCompareRouteImport.update({
+  id: '/vendors_/compare',
+  path: '/vendors/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VendorsNewRoute = VendorsNewRouteImport.update({
   id: '/vendors_/new',
   path: '/vendors/new',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/vendors': typeof VendorsRoute
   '/approvals/$vendorId': typeof ApprovalsVendorIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
+  '/vendors/compare': typeof VendorsCompareRoute
   '/vendors/new': typeof VendorsNewRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/vendors': typeof VendorsRoute
   '/approvals/$vendorId': typeof ApprovalsVendorIdRoute
   '/vendors/$vendorId': typeof VendorsVendorIdRoute
+  '/vendors/compare': typeof VendorsCompareRoute
   '/vendors/new': typeof VendorsNewRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/vendors': typeof VendorsRoute
   '/approvals_/$vendorId': typeof ApprovalsVendorIdRoute
   '/vendors_/$vendorId': typeof VendorsVendorIdRoute
+  '/vendors_/compare': typeof VendorsCompareRoute
   '/vendors_/new': typeof VendorsNewRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/vendors'
     | '/approvals/$vendorId'
     | '/vendors/$vendorId'
+    | '/vendors/compare'
     | '/vendors/new'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/vendors'
     | '/approvals/$vendorId'
     | '/vendors/$vendorId'
+    | '/vendors/compare'
     | '/vendors/new'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/vendors'
     | '/approvals_/$vendorId'
     | '/vendors_/$vendorId'
+    | '/vendors_/compare'
     | '/vendors_/new'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   VendorsRoute: typeof VendorsRoute
   ApprovalsVendorIdRoute: typeof ApprovalsVendorIdRoute
   VendorsVendorIdRoute: typeof VendorsVendorIdRoute
+  VendorsCompareRoute: typeof VendorsCompareRoute
   VendorsNewRoute: typeof VendorsNewRoute
 }
 
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VendorsVendorIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vendors_/compare': {
+      id: '/vendors_/compare'
+      path: '/vendors/compare'
+      fullPath: '/vendors/compare'
+      preLoaderRoute: typeof VendorsCompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vendors_/new': {
       id: '/vendors_/new'
       path: '/vendors/new'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   VendorsRoute: VendorsRoute,
   ApprovalsVendorIdRoute: ApprovalsVendorIdRoute,
   VendorsVendorIdRoute: VendorsVendorIdRoute,
+  VendorsCompareRoute: VendorsCompareRoute,
   VendorsNewRoute: VendorsNewRoute,
 }
 export const routeTree = rootRouteImport

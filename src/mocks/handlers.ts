@@ -11,6 +11,7 @@ import {
   getNotificationsFromDatabase,
   getPerformanceIndexFromDatabase,
   getVendorPerformanceFromDatabase,
+  getVendorComparisonFromDatabase,
   getVendorDetailsFromDatabase,
   getVendorsFromDatabase,
   markAllNotificationsReadInDatabase,
@@ -97,6 +98,27 @@ export const handlers = [
     await delay(350)
 
     return HttpResponse.json(getVendorsFromDatabase())
+  }),
+  http.get("/api/vendors/compare", async ({ request }) => {
+    await delay(350)
+
+    const vendorIds = new URL(request.url).searchParams
+      .get("ids")
+      ?.split(",")
+      .map((vendorId) => vendorId.trim())
+      .filter(Boolean)
+
+    if (!vendorIds || vendorIds.length < 2 || vendorIds.length > 4) {
+      return HttpResponse.json(
+        {
+          code: "INVALID_COMPARISON",
+          message: "Select between two and four vendors to compare.",
+        },
+        { status: 422 }
+      )
+    }
+
+    return HttpResponse.json(getVendorComparisonFromDatabase(vendorIds))
   }),
   http.get("/api/approvals", async () => {
     await delay(350)

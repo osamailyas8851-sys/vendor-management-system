@@ -8,13 +8,24 @@ import {
 import { dashboardQueryOptions } from "@/features/dashboard/api/dashboard.queries"
 import {
   createVendor,
+  getVendorComparison,
   getVendorDetails,
   getVendors,
 } from "@/features/vendors/api/vendors.service"
 
 export const vendorQueryKeys = {
   all: ["vendors"] as const,
+  comparison: (vendorIds: string[]) =>
+    ["vendors", "comparison", ...vendorIds] as const,
   detail: (vendorId: string) => ["vendors", "detail", vendorId] as const,
+}
+
+export function useVendorComparisonQuery(vendorIds: string[]) {
+  return useQuery({
+    enabled: vendorIds.length >= 2,
+    queryKey: vendorQueryKeys.comparison(vendorIds),
+    queryFn: ({ signal }) => getVendorComparison(vendorIds, signal),
+  })
 }
 
 export const vendorsQueryOptions = queryOptions({
